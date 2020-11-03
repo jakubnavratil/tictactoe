@@ -1,0 +1,49 @@
+@import 'utils';
+
+:host {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+.panel {
+  flex: 1;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.actions {
+  padding: 1rem .5rem;
+}
+
+.rooms {
+  padding: 0 1rem;
+  border-spacing: 0;
+
+  tr {
+    td, th {
+      text-align: left;
+      padding: .4rem 1rem;
+      border-bottom: 1px solid #f1f1f1;
+    }
+  }
+
+  thead {
+    th {
+      background: rgba(0, 0, 0, .1);
+      font-weight: bold;
+    }
+  }
+
+  .col-clients {
+    width: 20%;
+  }
+  .col-name {
+    width: 30%;
+  }
+}
+

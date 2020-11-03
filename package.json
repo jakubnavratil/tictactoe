@@ -1,0 +1,19 @@
+{
+  "name": "tictactoe",
+  "version": "0.0.1-alpha.1",
+  "description": "",
+  "scripts": {
+    "docker:build": "docker build -t registry.livesoft.cz/tictactoe:latest -t registry.livesoft.cz/tictactoe:%npm_package_version% .",
+    "docker:push": "docker push registry.livesoft.cz/tictactoe:%npm_package_version%",
+    "docker:run": "docker run --name tictactoe --rm -t -i -p 2567:2567 registry.livesoft.cz/tictactoe:latest",
+    "predeploy": "envsub --env VERSION=%npm_package_version% deploy.template.yaml deploy.yaml",
+    "deploy": "kubectl apply -f deploy.yaml",
+    "release": "npm version --no-git-tag-version prerelease --preid=alpha",
+    "postrelease": "npm run docker:build && npm run docker:push && npm run deploy"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "envsub": "^4.0.7"
+  }
+}

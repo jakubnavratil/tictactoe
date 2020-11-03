@@ -1,0 +1,59 @@
+@import 'utils';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  background-color: #4158D0;
+  background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+  color: #4d4d4d;
+  // min-height: 100vh;
+  height: 100%;
+}
+
+.app-button {
+  display: inline-block;
+  font-size: .8rem;
+  color: rebeccapurple;
+  background: white;
+  border: none;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, .1);
+  padding: .4rem .8rem;
+  text-transform: uppercase;
+  margin: 0 .5rem;
+  text-decoration: none;
+  outline: none !important;
+  cursor: pointer;
+  transition: 200ms ease all;
+
+  &:hover,
+  &:focus {
+    background: #e4e0e0;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, .2);
+  }
+
+  &.primary {
+    color: white;
+    background: rebeccapurple;
+
+    &:hover,
+    &:focus {
+      background: white;
+      color: rebeccapurple;
+    }
+  }
+}
+
+
+.panel, .side, .toolbar {
+  @extend .shadow;
+}

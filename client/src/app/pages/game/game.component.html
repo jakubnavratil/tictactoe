@@ -1,0 +1,112 @@
+<div class="panel">
+
+  <div class="actions">
+    <a routerLink="/lobby" class="app-button">◀&nbsp;&nbsp;Back to lobby</a>
+    <div class="space"></div>
+    <button (click)="startGame()" *ngIf="isStateFinished && isHost" class="app-button primary">Play next round</button>
+    <button class="app-button" *ngIf="isHost" (click)="showInviteDialog = true">Invite</button>
+    <button class="app-button" *ngIf="isHost && !isStateSetting" (click)="resetGame()">New game</button>
+  </div>
+
+  <div class="header">
+    <div class="player-header">
+      <strong class="player-name">{{ playerA | playerName }}</strong><br>
+      <span class="player-time">@ {{ playerA?.remainingTime | time }}</span>
+    </div>
+    <div class="game-status">
+      <div class="score">
+        <span class="score-digit">{{ playerA?.score || 0 }}</span>
+        :
+        <span class="score-digit">{{ playerB?.score || 0 }}</span>
+      </div>
+      <div *ngIf="isStateRunning" class="current-move">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2"
+          *ngIf="state.currentMove.mark === Mark.CROSS">
+          <line class="path line" fill="none" stroke="#D06079" stroke-width="10" stroke-linecap="round"
+            stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+          <line class="path line" fill="none" stroke="#D06079" stroke-width="10" stroke-linecap="round"
+            stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2" />
+        </svg>
+
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2"
+          *ngIf="state.currentMove.mark === Mark.CIRCLE">
+          <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="10" stroke-miterlimit="10" cx="65.1"
+            cy="65.1" r="37" />
+        </svg>
+        {{ state.currentMove | playerName }} turn
+      </div>
+      <div *ngIf="isStateFinished" class="game-end" @gameEnd>
+        {{ state.winningPlayer | playerName }} won!
+      </div>
+    </div>
+    <div class="player-header right-align">
+      <ng-container *ngIf="playerB">
+        <strong class="player-name">{{ playerB | playerName }}</strong><br>
+        <span class="player-time">@ {{ playerB.remainingTime | time }}</span>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="panel-content">
+
+    <button (click)="startGame()" *ngIf="canStartGame" class="start-button">Start</button>
+
+    <div *ngIf="showBoard" [@gameEndPositions]="isStateFinished" class="board" [style.width]="boardWidth + 'px'"
+      [style.height]="boardWidth + 'px'" [style.gridTemplateColumns]="'repeat(' + state.size + ', 1fr)'"
+      [style.gridTemplateRows]="'repeat(' + state.size + ', 1fr)'">
+
+      <div class="position" *ngFor="let owner of state.board; let position = index; trackBy:trackBy"
+        (click)="placeMark(position)" [class.winning]="isWinningPosition(position)"
+        [class.confirmation]="position === moveConfirmation" [class.last-position]="position === state.lastPosition">
+
+        <ng-container *ngIf="owner">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2"
+            *ngIf="owner.mark === Mark.CROSS">
+            <line class="path line" fill="none" stroke="#D06079" stroke-width="10" stroke-linecap="round"
+              stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+            <line class="path line" fill="none" stroke="#D06079" stroke-width="10" stroke-linecap="round"
+              stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2" />
+          </svg>
+
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2"
+            *ngIf="owner.mark === Mark.CIRCLE">
+            <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="10" stroke-miterlimit="10" cx="65.1"
+              cy="65.1" r="37" />
+          </svg>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="invite-container" *ngIf="showInviteDialog">
+    <div class="invite" @reveal>
+      <strong>Send this link to your friend</strong>
+
+      <div class="invite-input">
+        <input type="text" [value]="inviteLink" #inviteInput><button class="app-button primary"
+          (click)="copyInviteLink(inviteInput)">Copy</button>
+      </div>
+
+      <button class="app-button primary" (click)="showInviteDialog = false">Close</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="side">
+  <div class="chat">
+    <div class="messages" #scrollBottom>
+      <div class="message" @reveal *ngFor="let m of messages$ | async" [class.outgoing]="isMessageOutgoing(m)"
+        [class.system]="m.system">
+        <strong class="message-name" *ngIf="!m.system">{{ m.player | playerName }}</strong>
+        <strong class="message-name" *ngIf="m.system">System</strong>
+        <p>{{ m.message }}</p>
+      </div>
+    </div>
+    <form class="new-message" autocomplete="off"
+      (ngSubmit)="$event.preventDefault(); sendMessage(newMessage.value); newMessage.value = ''">
+      <input name="newmessage" #newMessage placeholder="Message text ..." autocomplete="off">
+      <button>▶</button>
+    </form>
+  </div>
+</div>

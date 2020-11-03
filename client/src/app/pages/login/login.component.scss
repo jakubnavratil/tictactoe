@@ -1,0 +1,27 @@
+@import 'utils';
+
+:host {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+.panel {
+  display: flex;
+  flex: 1;
+  background: white;
+  justify-content: center;
+  align-items: center;
+  padding: .5rem;
+}
+
+input {
+  border: 1px solid lightgray;
+  background: white;
+  padding: .5rem;
+  margin-right: .5rem;
+  height: 2rem;
+}
+.app-button {
+  height: 2rem;
+}

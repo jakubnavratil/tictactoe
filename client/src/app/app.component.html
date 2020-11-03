@@ -1,0 +1,15 @@
+ <div class="toolbar-container">
+   <div class="toolbar">
+     <h1>Tic Tac Toe</h1>
+     <div class="version">
+       v{{ version }}
+     </div>
+     <div class="user-name">
+       {{ userName$ | async }}
+     </div>
+   </div>
+ </div>
+
+ <div class="container">
+   <router-outlet></router-outlet>
+ </div>

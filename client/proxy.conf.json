@@ -1,0 +1,19 @@
+{
+  "/ws/matchmake": {
+    "target": "http://localhost:2567",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/ws": ""
+    }
+  },
+  "/ws": {
+    "target": "ws://localhost:2567",
+    "secure": false,
+    "ws": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/ws": ""
+    }
+  }
+}
